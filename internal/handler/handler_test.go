@@ -1,11 +1,14 @@
 package handler
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func TestShortenURL(t *testing.T) {
@@ -62,7 +65,9 @@ func TestGetURL(t *testing.T) {
 
 	t.Run("existing ID returns 307 with Location", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/"+id, nil)
-		req.SetPathValue("id", id)
+		rctx := chi.NewRouteContext()
+		rctx.URLParams.Add("id", id)
+		req = req.WithContext(context.WithValue(req.Context(), chi.RouteCtxKey, rctx))
 		w := httptest.NewRecorder()
 
 		h.GetURL(w, req)
@@ -82,7 +87,9 @@ func TestGetURL(t *testing.T) {
 
 	t.Run("non-existing ID returns 400", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/nonexistent", nil)
-		req.SetPathValue("id", "nonexistent")
+		rctx := chi.NewRouteContext()
+		rctx.URLParams.Add("id", "nonexistent")
+		req = req.WithContext(context.WithValue(req.Context(), chi.RouteCtxKey, rctx))
 		w := httptest.NewRecorder()
 
 		h.GetURL(w, req)

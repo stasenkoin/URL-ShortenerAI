@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+
+	"github.com/go-chi/chi/v5"
 )
 
 const (
@@ -45,7 +47,7 @@ func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetURL(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
+	id := chi.URLParam(r, "id")
 
 	h.mu.RLock()
 	originalURL, ok := h.storage[id]
