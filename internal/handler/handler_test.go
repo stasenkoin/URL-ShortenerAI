@@ -13,7 +13,7 @@ import (
 
 func TestShortenURL(t *testing.T) {
 	t.Run("valid URL returns 201 and shortened URL", func(t *testing.T) {
-		h := New()
+		h := New("http://localhost:8080")
 		body := strings.NewReader("https://practicum.yandex.ru/")
 		req := httptest.NewRequest(http.MethodPost, "/", body)
 		req.Header.Set("Content-Type", "text/plain")
@@ -34,13 +34,13 @@ func TestShortenURL(t *testing.T) {
 		}
 
 		shortURL := string(responseBody)
-		if !strings.HasPrefix(shortURL, baseURL+"/") {
-			t.Errorf("expected shortened URL to start with %s/, got %s", baseURL, shortURL)
+		if !strings.HasPrefix(shortURL, "http://localhost:8080/") {
+			t.Errorf("expected shortened URL to start with http://localhost:8080/, got %s", shortURL)
 		}
 	})
 
 	t.Run("empty body returns 400", func(t *testing.T) {
-		h := New()
+		h := New("http://localhost:8080")
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(""))
 		w := httptest.NewRecorder()
 
@@ -53,7 +53,7 @@ func TestShortenURL(t *testing.T) {
 }
 
 func TestGetURL(t *testing.T) {
-	h := New()
+	h := New("http://localhost:8080")
 	body := strings.NewReader("https://practicum.yandex.ru/")
 	req := httptest.NewRequest(http.MethodPost, "/", body)
 	w := httptest.NewRecorder()
