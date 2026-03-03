@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s https://api.github.com/repos/Yandex-Practicum/go-autotests/releases/latest)",
+      "Bash(python3 -c \"import sys,json; assets = json.load\\(sys.stdin\\)[''assets'']; [print\\(a[''name'']\\) for a in assets]\")",
+      "Bash(go build ./...)",
+      "Bash(go build -o cmd/shortener/shortener ./cmd/shortener/)",
+      "Bash(lsof -i :8080 -sTCP:LISTEN)",
+      "Bash(kill 4273)",
+      "Bash(shortenertest -test.v -test.run=^TestIteration1$ -binary-path=cmd/shortener/shortener)"
+    ]
+  }
+}
