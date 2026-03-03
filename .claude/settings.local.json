@@ -10,7 +10,9 @@
       "Bash(kill 4273)",
       "Bash(shortenertest -test.v -test.run=^TestIteration1$ -binary-path=cmd/shortener/shortener)",
       "Bash(go test ./internal/handler/ -v)",
-      "Bash(shortenertest -test.v -test.run=^TestIteration2$ -source-path=.)"
+      "Bash(shortenertest -test.v -test.run=^TestIteration2$ -source-path=.)",
+      "Bash(go get github.com/go-chi/chi/v5@latest)",
+      "Bash(shortenertest -test.v -test.run=^TestIteration3$ -source-path=.)"
     ]
   }
 }
