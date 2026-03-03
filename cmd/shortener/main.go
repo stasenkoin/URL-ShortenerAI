@@ -5,11 +5,14 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/stasenkoin/URL-ShortenerAI/internal/config"
 	"github.com/stasenkoin/URL-ShortenerAI/internal/handler"
 )
 
 func main() {
-	h := handler.New()
+	cfg := config.ParseFlags()
+
+	h := handler.New(cfg.BaseURL)
 
 	r := chi.NewRouter()
 	r.Post("/", h.ShortenURL)
@@ -17,6 +20,6 @@ func main() {
 	r.NotFound(h.BadRequest)
 	r.MethodNotAllowed(h.BadRequest)
 
-	log.Println("Starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Printf("Starting server on %s", cfg.ServerAddress)
+	log.Fatal(http.ListenAndServe(cfg.ServerAddress, r))
 }

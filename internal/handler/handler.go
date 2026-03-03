@@ -11,7 +11,6 @@ import (
 )
 
 const (
-	baseURL  = "http://localhost:8080"
 	idLength = 8
 	charset  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 )
@@ -19,11 +18,13 @@ const (
 type Handler struct {
 	mu      sync.RWMutex
 	storage map[string]string
+	baseURL string
 }
 
-func New() *Handler {
+func New(baseURL string) *Handler {
 	return &Handler{
 		storage: make(map[string]string),
+		baseURL: baseURL,
 	}
 }
 
@@ -43,7 +44,7 @@ func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(baseURL + "/" + id))
+	w.Write([]byte(h.baseURL + "/" + id))
 }
 
 func (h *Handler) GetURL(w http.ResponseWriter, r *http.Request) {
